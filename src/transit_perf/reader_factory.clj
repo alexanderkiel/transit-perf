@@ -12,16 +12,13 @@
     (t/write (t/writer out :json) msg)
     (.toByteArray out)))
 
-(def reader-factory (t/reader-factory))
-
 (defn read-msg [msg]
-  (t/read (t/reader reader-factory :json (ByteArrayInputStream. msg))))
+  (t/read (t/reader (ByteArrayInputStream. msg) :json)))
 
 (defn profile [msg]
   (dotimes [_ 100000] (read-msg msg)))
 
 (comment
-
 
   (read-msg msg)
   (profile msg)
