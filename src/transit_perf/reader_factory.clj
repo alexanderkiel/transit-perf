@@ -12,8 +12,13 @@
     (t/write (t/writer out :json) msg)
     (.toByteArray out)))
 
+(def handlers
+  (->> (for [n (range 20)]
+         [(str "some.longer.tagname." n) (t/read-handler identity)])
+       (into {})))
+
 (defn read-msg [msg]
-  (t/read (t/reader (ByteArrayInputStream. msg) :json)))
+  (t/read (t/reader (ByteArrayInputStream. msg) :json {:handlers handlers})))
 
 (defn profile [msg]
   (dotimes [_ 100000] (read-msg msg)))
