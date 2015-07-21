@@ -12,7 +12,12 @@
     (t/write (t/writer out :json) msg)
     (.toByteArray out)))
 
-(def reader-factory (t/reader-factory))
+(def handlers
+  (->> (for [n (range 20)]
+         [(str "some.longer.tagname." n) (t/read-handler identity)])
+       (into {})))
+
+(def reader-factory (t/reader-factory {:handlers handlers}))
 
 (defn read-msg [msg]
   (t/read (t/reader reader-factory :json (ByteArrayInputStream. msg))))
